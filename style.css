@@ -117,8 +117,6 @@ form.check span p {
     transform: translate(-50%, -50%);
 }
 
-
-
 form {
     display: flex;
     flex-direction: column;
@@ -501,6 +499,16 @@ aside.red {
         font-size: 1.8rem;
     }
 
+    .container .category {
+        margin: 15px;
+    }
+
+    .container .category h3 {
+        font-size: 2rem;
+        padding: 15px;
+        ;
+    }
+
 }
 
 @media (min-width:1200px) {
@@ -513,4 +521,39 @@ aside.red {
     aside {
         width: 45%;
     }
+
+    form.check {
+        top: 40px;
+        left: 70px;
+        width: 100px;
+        height: 50px;
+    }
+
+    form.check span {
+        width: 40px;
+    }
+
+    .container .start button {
+        height: 50px;
+        width: 150px;
+        font-size: 1.7rem;
+    }
+
+    .container button#reset {
+        height: 50px;
+        width: 150px;
+        font-size: 1.7rem
+    }
+
+    form.multi input {
+        display: none;
+        padding: 8px;
+        font-size: 1.5rem;
+        margin: 5px;
+        border: .5px solid rgba(0, 0, 0, 0.5);
+        outline: none;
+        border-radius: 10px;
+        width: 180px;
+    }
+
 }
