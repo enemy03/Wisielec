@@ -19,11 +19,11 @@ class Board {
     constructor() {
         this.index = [];
     }
-    checkWord(e) {
+    checkWord(e, word) {
         const letter = e.target;
         const letterText = e.target.textContent;
         let index = 0;
-        const word = draw.getWord();
+        // const word = draw.getWord();
         for (let i = 0; i < word.length; i++) {
             if (word.toLowerCase().charAt(index) === letterText.toLowerCase()) {
                 board.index.push(index)
@@ -43,22 +43,58 @@ class UI {
         this.btn = document.getElementById('startGame');
         this.h2 = document.querySelector('h2.result');
         this.img = document.querySelectorAll('.img');
+        this.inputC = document.getElementById('category');
+        this.inputW = document.getElementById('word')
         this.id = 0;
     }
 
-    render(e) {
-        draw.createWord(e);
-        for (let i = 0; i < draw.word.length; i++) {
-            if (draw.word.search('_') + 1) {
-                ui.createSpan().textContent = `  `
-            }
-            ui.createSpan().textContent = ` _ `
-
+    check() {
+        const chcekbox = document.querySelector('.check input');
+        const inputC = document.getElementById('category');
+        const inputW = document.getElementById('word');
+        const spanGame = document.querySelector('form.check span p')
+        if (chcekbox.checked == true) {
+            inputC.classList.add('show');
+            inputW.classList.add('show');
+            spanGame.textContent = 'M'
+            return true
+        } else {
+            inputC.classList.remove('show');
+            inputW.classList.remove('show');
+            spanGame.textContent = 'S'
+            return false
         }
-        document.querySelector('.category h3 span').textContent = 'Raper'
-        document.querySelectorAll('.letter').forEach(le => {
-            le.addEventListener('click', ui.startGame)
-        })
+    }
+
+    render(e) {
+        if (!ui.check()) {
+            draw.createWord(e);
+            for (let i = 0; i < draw.word.length; i++) {
+                if (draw.word.search('_') + 1) {
+                    ui.createSpan().textContent = `  `
+                }
+                ui.createSpan().textContent = ` _ `
+
+            }
+            document.querySelector('.category h3 span').textContent = 'Raper'
+            document.querySelectorAll('.letter').forEach(le => {
+                le.addEventListener('click', ui.startGame)
+            })
+        } else {
+            for (let i = 0; i < ui.inputW.value.length; i++) {
+                if (ui.inputW.value.search('_') + 1) {
+                    ui.createSpan().textContent = `  `
+                }
+                ui.createSpan().textContent = ` _ `
+
+            }
+            document.querySelector('.category h3 span').textContent = `${ui.inputC.value}`
+            document.querySelectorAll('.letter').forEach(le => {
+                le.addEventListener('click', ui.startGame)
+            })
+        }
+
+
     }
 
     createSpan() {
@@ -68,17 +104,24 @@ class UI {
     }
 
     startGame(e) {
-        board.checkWord(e);
+        let wordValue = '';
+        if (!ui.check()) {
+            board.checkWord(e, draw.getWord());
+            wordValue = draw.getWord();
+        } else {
+            board.checkWord(e, ui.inputW.value);
+            wordValue = ui.inputW.value;
+        }
         const aside = document.querySelector('aside');
         const asideH2 = document.querySelector('aside h2');
         const letter = e.target;
         if (board.index.length > 0) {
             for (let i = 0; i < board.index.length; i++) {
-                document.querySelectorAll('span')[board.index[i]].textContent = letter.textContent;
+                document.querySelectorAll('h2 span')[board.index[i]].textContent = letter.textContent;
             }
             letter.classList.add('green')
             board.index = [];
-            if (draw.getWord().toUpperCase() === ui.h2.textContent) {
+            if (wordValue.toUpperCase() === ui.h2.textContent) {
                 aside.classList.add('green');
                 asideH2.textContent = "Wygrałeś !!!"
 
@@ -109,10 +152,11 @@ class UI {
         document.querySelectorAll('.letter').forEach(le => {
             le.removeEventListener('click', ui.startGame)
         })
-
+        ui.inputC.value = '';
+        ui.inputW.value = '';
+        document.querySelector('.category h3 span').textContent = '';
     }
 }
-
 const ui = new UI
 
 document.getElementById('startGame').addEventListener('click', ui.render)
@@ -122,4 +166,4 @@ document.querySelector('aside .imgAs').addEventListener('click', () => {
     document.querySelector('aside').classList.remove('green');
 })
 
-document.getElementById('reset').addEventListener('click', ui.resetGame)
+document.getElementById('reset').addEventListener('click', ui.resetGame);
