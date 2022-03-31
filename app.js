@@ -112,6 +112,7 @@ class UI {
             board.checkWord(e, ui.inputW.value);
             wordValue = ui.inputW.value;
         }
+        ui.inputC.value = '';
         const aside = document.querySelector('aside');
         const asideH2 = document.querySelector('aside h2');
         const letter = e.target;
@@ -132,7 +133,7 @@ class UI {
             ui.id++
             if (ui.id === 11) {
                 aside.classList.add('red');
-                asideH2.textContent = "Przegrałeś !!!"
+                asideH2.textContent = `Przegrałeś!!! Poprawne słowo to: ${wordValue}`
             }
         }
     }
